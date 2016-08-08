@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Programming = Math: Applying Math to Programming</title>
+    <link href="http://aaronvargo.github.io/atom.xml" rel="self" />
+    <link href="http://aaronvargo.github.io" />
+    <id>http://aaronvargo.github.io/atom.xml</id>
+    <author>
+        <name>Aaron Vargo</name>
+        <email>vargosblog@gmail.com</email>
+    </author>
+    <updated>2016-08-07T00:00:00Z</updated>
+    <entry>
+    <title>Hello, World!</title>
+    <link href="http://aaronvargo.github.io/posts/helloworld.html" />
+    <id>http://aaronvargo.github.io/posts/helloworld.html</id>
+    <published>2016-08-07T00:00:00Z</published>
+    <updated>2016-08-07T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<h1 class="title">Hello, World!</h1>
+<div class="info">
+    Posted on August  7, 2016
+    
+</div>
+
+<p>Here’s some code:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Main</span> <span class="kw">where</span>
+
+<span class="ot">main ::</span> <span class="dt">IO</span> ()
+main <span class="fu">=</span> putStrLn <span class="st">&quot;Hello, world!&quot;</span>
+</code></pre></div>
+<p>Let’s run it!</p>
+<pre><code>λ&gt; main
+Hello, world!
+</code></pre>
+<p>It works!</p>
+<!--more-->
+<p>Now let’s define a function in ghci:</p>
+<pre><code>λ&gt; let replicateMain n = replicateM_ n main
+
+&lt;interactive&gt;:13:23:
+    Not in scope: ‘replicateM_’
+    Perhaps you meant one of these:
+      ‘replicate’ (imported from Prelude), ‘replicateMain’ (line 13)
+</code></pre>
+<p>Oops!</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">λ<span class="fu">&gt;</span> <span class="kw">import </span><span class="dt">Control.Monad</span>
+λ<span class="fu">&gt;</span> <span class="kw">let</span> replicateMain n <span class="fu">=</span> replicateM_ n main
+λ<span class="fu">&gt;</span> <span class="fu">:</span>t replicateMain
+<span class="ot">replicateMain ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()</code></pre></div>
+<pre><code>λ&gt; replicateMain 2
+Hello, world!
+Hello, world!
+λ&gt; replicateMain 5
+Hello, world!
+Hello, world!
+Hello, world!
+Hello, world!
+Hello, world!
+</code></pre>
+<p>It works!</p>
+<p>This post was generated with <a href="https://github.com/aaronvargo/htut">htut</a>.</p>
+
+]]></summary>
+</entry>
+
+</feed>
