@@ -1,0 +1,26 @@
+name:                site
+version:             0.1.0.0
+synopsis:            Aaron Vargo's Personal Website
+cabal-version:      >= 1.22
+license:             BSD3
+license-file:        LICENSE
+author:              Aaron Vargo
+copyright:           Copyright 2016 Aaron Vargo
+build-type:          Simple
+
+
+executable site
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , hakyll
+                     , mtl
+                     , text
+                     , transformers
+                     , filepath
+                     , pandoc
+                     , htut
+                     , containers
+
+  default-language:    Haskell2010

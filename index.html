@@ -1,0 +1,17 @@
+---
+title: Home
+---
+
+<p>This is my website, where I plan to write things, or something. Topics I plan to write about include functional programming, programming languages, and Haskell.</p>
+
+$for(recentPosts)$
+  <h1 class="title"><a href="$url$" class="title">$title$</a></h1>
+  <p>
+      $if(teaser)$
+        $teaser$
+      <a href="$url$">Read more →</a>
+      $else$
+        $body$
+      $endif$
+  </p>
+$endfor$
