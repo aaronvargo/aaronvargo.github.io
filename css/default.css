@@ -42,15 +42,6 @@ div#header h2 {
     padding-bottom: calc(10px + 1.5vw);
 }
 
-div#twoplustwo {
-    color: white;
-    font-size: 12px;
-    padding-top: 5px;
-    text-decoration: none;
-    display: inline-block;
-    text-align: left;
-}
-
 div #navigation {
     padding-top: 10px;
     text-align: left;
