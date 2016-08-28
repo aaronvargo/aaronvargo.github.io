@@ -79,11 +79,11 @@ withToc = defaultHakyllWriterOptions
 
 myFeedConfig :: FeedConfiguration
 myFeedConfig = FeedConfiguration
-  { feedTitle = "Programming = Math: Applying Math to Programming"
+  { feedTitle = "Programming = Mathematics, and other abstract nonsense"
   , feedDescription = "Recent posts"
   , feedAuthorName = "Aaron Vargo"
   , feedAuthorEmail = "vargosblog@gmail.com"
-  , feedRoot = "http://aaronvargo.github.io"
+  , feedRoot = "https://aaronvargo.github.io"
   }
 
 createFeed s f =
