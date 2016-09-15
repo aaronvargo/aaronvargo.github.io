@@ -56,7 +56,7 @@ pageCompiler = do
     relativizeUrls
 
 postCtx :: Context String
-postCtx = mconcat [field "mathjax", dateField "date" "%B %e, %Y", defaultContext]
+postCtx = mconcat [dateField "date" "%B %e, %Y", defaultContext]
 
 teaserCtx :: Context String
 teaserCtx = teaserField "teaser" contentSnapshot <> postCtx
