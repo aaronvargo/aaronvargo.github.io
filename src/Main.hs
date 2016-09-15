@@ -1,15 +1,18 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
-{-# LANGUAGE OverloadedStrings         #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedLists #-}
 
 module Main where
 
-import           Hakyll
-import           System.FilePath
-import           Text.Pandoc
-import           Tut.Hakyll
+import Hakyll
+import System.FilePath
+import Text.Pandoc
+import Tut.Hakyll
+import Data.Monoid
 
 main :: IO ()
-main = hakyll $ do
+main =
+  hakyll $ do
     mirc "images/*" copyFileCompiler
     mirc "css/*" compressCssCompiler
     match "code/**" (compile getResourceString)
@@ -31,54 +34,63 @@ titledContentSnapshot = "titledContent"
 
 postCompiler :: Compiler (Item String)
 postCompiler =
-    myPandocCompiler
-    >>= loadAndApplyTemplate "templates/post.html" postCtx
-    >>= saveSnapshot contentSnapshot
-    >>= loadAndApplyTemplate "templates/title.html" postCtx
-    >>= saveSnapshot titledContentSnapshot
-    >>= loadAndApplyTemplate "templates/default.html" postCtx
-    >>= relativizeUrls
+  myPandocCompiler
+  >>= loadAndApplyTemplate "templates/post.html" postCtx
+  >>= saveSnapshot contentSnapshot
+  >>= loadAndApplyTemplate "templates/title.html" postCtx
+  >>= saveSnapshot titledContentSnapshot
+  >>= loadAndApplyTemplate "templates/default.html" postCtx
+  >>= relativizeUrls
 
 pageCompiler :: Compiler (Item String)
 pageCompiler = do
-    posts <- recentFirst =<< loadAllSnapshots postsPattern contentSnapshot
-    let ctx = mconcat [ listField "posts" postCtx (return posts)
-                      , listField "recentPosts"
-                                  teaserCtx
-                                  (return $ take 5 posts)
-                      , defaultContext
-                      ]
-    getResourceBody
-        >>= applyAsTemplate ctx
-        >>= loadAndApplyTemplate "templates/default.html" ctx
-        >>= relativizeUrls
+  posts <- recentFirst =<< loadAllSnapshots postsPattern contentSnapshot
+  let ctx =
+        mconcat
+          [ listField "posts" postCtx (return posts)
+          , listField "recentPosts" teaserCtx (return $ take 5 posts)
+          , defaultContext
+          ]
+  getResourceBody >>= applyAsTemplate ctx >>=
+    loadAndApplyTemplate "templates/default.html" ctx >>=
+    relativizeUrls
 
 postCtx :: Context String
-postCtx = mconcat
-  [ dateField "date" "%B %e, %Y"
-  , defaultContext
-  ]
+postCtx = mconcat [field "mathjax", dateField "date" "%B %e, %Y", defaultContext]
 
 teaserCtx :: Context String
-teaserCtx = mconcat [ teaserField "teaser" contentSnapshot , postCtx]
+teaserCtx = teaserField "teaser" contentSnapshot <> postCtx
 
 postsPattern :: Pattern
 postsPattern = "posts/*"
 
 myPandocCompiler :: Compiler (Item String)
-myPandocCompiler = pandocCompilerWithTransformM defaultHakyllReaderOptions
-                                                defaultHakyllWriterOptions
-                                                defaultHakyllTut
+myPandocCompiler =
+  pandocCompilerWithTransformM
+    defaultHakyllReaderOptions
+    (withMathJax defaultHakyllWriterOptions)
+    defaultHakyllTut
 
-withToc :: WriterOptions
-withToc = defaultHakyllWriterOptions
-        { writerTableOfContents = True
-        , writerTemplate = "$toc$\n$body$"
-        , writerStandalone = True
-        }
+withMathJax :: WriterOptions -> WriterOptions
+withMathJax w =
+  w
+  { writerExtensions =
+      writerExtensions w <>
+      [Ext_tex_math_dollars, Ext_tex_math_double_backslash, Ext_latex_macros]
+  , writerHTMLMathMethod = MathJax ""
+  }
+
+withToc :: WriterOptions -> WriterOptions
+withToc w =
+  w
+  { writerTableOfContents = True
+  , writerTemplate = "$toc$\n$body$"
+  , writerStandalone = True
+  }
 
 myFeedConfig :: FeedConfiguration
-myFeedConfig = FeedConfiguration
+myFeedConfig =
+  FeedConfiguration
   { feedTitle = "Programming = Mathematics, and other abstract nonsense"
   , feedDescription = "Recent posts"
   , feedAuthorName = "Aaron Vargo"
@@ -90,7 +102,8 @@ createFeed s f =
   create [s] $ do
     route idRoute
     compile $ do
-        let feedCtx = postCtx `mappend` bodyField "description"
-        posts <- fmap (take 10) . recentFirst =<<
-            loadAllSnapshots postsPattern titledContentSnapshot
-        f myFeedConfig feedCtx posts
+      let feedCtx = postCtx `mappend` bodyField "description"
+      posts <-
+        fmap (take 10) . recentFirst =<<
+        loadAllSnapshots postsPattern titledContentSnapshot
+      f myFeedConfig feedCtx posts
