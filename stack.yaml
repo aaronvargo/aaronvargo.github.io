@@ -1,14 +1,14 @@
 # For more information, see: https://github.com/commercialhaskell/stack/blob/release/doc/yaml_configuration.md
 
 # Specifies the GHC version and set of packages available (e.g., lts-3.5, nightly-2015-09-21, ghc-7.10.2)
-resolver: lts-6.10
+resolver: nightly-2016-12-13
 
 # Local packages, usually specified by relative directory name
 packages:
 - '.'
 - location:
     git: https://github.com/aaronvargo/htut.git
-    commit: 25846006c6bbdac240311d65e8e3b48062c9dc26
+    commit: d0756e9ebed36fbf4af679789457de2f063ca821
 
 # Packages to be pulled from upstream that are not in the resolver (e.g., acme-missiles-0.3)
 extra-deps: []

@@ -1,11 +1,11 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLists #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Main where
 
 import Hakyll
-import System.FilePath
 import Text.Pandoc
 import Tut.Hakyll
 import Data.Monoid
@@ -84,8 +84,7 @@ withToc :: WriterOptions -> WriterOptions
 withToc w =
   w
   { writerTableOfContents = True
-  , writerTemplate = "$toc$\n$body$"
-  , writerStandalone = True
+  , writerTemplate = Just "$toc$\n$body$"
   }
 
 myFeedConfig :: FeedConfiguration

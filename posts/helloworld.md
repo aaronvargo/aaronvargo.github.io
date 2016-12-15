@@ -1,13 +1,12 @@
 ---
 title: 'Hello, World!'
 date: 'August 7, 2016'
-include: code/helloworld/src/Main.hs
 ghci: code/helloworld
 ---
 
 Here's some code: 
 
-~~~include
+~~~include:main
 header
 ~~~
 
@@ -23,7 +22,7 @@ It works!
 
 Now let's define a function in ghci:
 
-~~~ghci
+~~~{.ghci .fail}
 let replicateMain n = replicateM_ n main
 ~~~
 
